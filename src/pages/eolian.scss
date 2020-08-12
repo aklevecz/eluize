@@ -1,0 +1,84 @@
+html,
+body {
+  //   background: white;
+  // height: 100000px;
+}
+
+$red-fill: #ff5050;
+@keyframes glowing {
+  0% {
+    fill: $red-fill;
+  }
+  50% {
+    fill: black;
+  }
+  100% {
+    fill: $red-fill;
+  }
+}
+
+#soundcloud,
+#spotify,
+#bandcamp {
+  animation: glowing 5000ms infinite;
+  cursor: pointer;
+}
+
+button,
+#pause,
+#play,
+#player-close,
+#pick-device,
+.device {
+  cursor: pointer;
+}
+
+.playing {
+  fill: #59ffc5 !important;
+}
+
+.device-box-container {
+  position: absolute;
+  padding: 6px 15px 3px;
+  background: #8a8eff;
+  border-radius: 5px;
+  text-align: "center";
+  font-family: Arial;
+}
+
+.bottom-notch {
+  position: absolute;
+  left: 39.7%;
+  width: 40px;
+  bottom: -10px;
+  // opacity: 0;
+  polyline {
+    fill: #8a8eff !important;
+  }
+}
+
+// this is the actual slider
+.slider {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+// this is the slider icon
+#star-container {
+  position: absolute;
+  display: "none";
+}
+#muted-cross {
+  display: none;
+}
+#static-volume-icon {
+  cursor: pointer;
+}
+
+#volume-target {
+  opacity: 0;
+}
