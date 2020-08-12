@@ -5,7 +5,7 @@ import pausePlaylistTrack from "./src/services/pause-playlist-track"
 import getUserDevices from "./src/services/get-user-devices"
 import getUserCurrentlyPlaying from "./src/services/get-user-currently-playing"
 
-const RAPTOR_REPO_NAME = "Raptor Repo Player"
+const RAPTOR_REPO_NAME = "Eluize's Eolian Player"
 export const playerContext = React.createContext()
 
 const showActiveTrack = uri => {
