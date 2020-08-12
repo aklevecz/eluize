@@ -2,7 +2,7 @@ require("dotenv").config()
 module.exports = {
   siteMetadata: {
     title: `Eluize`,
-    description: `Eolian.`,
+    description: `Eluize - Eolian - August 24th.`,
     author: `@teh.raptor`,
   },
   plugins: [
