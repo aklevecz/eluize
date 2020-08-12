@@ -26,6 +26,7 @@ import {
 } from "../components/eolian/utils"
 import usePlayer from "../components/eolian/usePlayer"
 import Layout from "../components/layout"
+import SEO from "../components/seo"
 
 export const albumUri = "spotify:album:00DHViaM6QJwQjipBFoqsB"
 export const trackUris = {
@@ -215,6 +216,7 @@ const Eolian = () => {
     <>
       <div>
         {/*just for token checking, don't really need it */}
+        <SEO title="Eolian" image={require("../images/cover-photo.png")} />
         <Layout />
         <SVG
           style={{ width: 20, display: "none" }}

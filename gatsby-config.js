@@ -1,8 +1,8 @@
 require("dotenv").config()
 module.exports = {
   siteMetadata: {
-    title: `Raptor Repo`,
-    description: `Integrated artist content.`,
+    title: `Eluize`,
+    description: `Eolian.`,
     author: `@teh.raptor`,
   },
   plugins: [
@@ -27,13 +27,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Eluize - Eolian`,
+        name: `Eolian`,
         short_name: `eluize-releases`,
         start_url: `/`,
         background_color: `#000000`,
         theme_color: `#FF0000`,
         display: `minimal-ui`,
-        icon: `src/images/lil-raptor.png`, // This path is relative to the root of the site.
+        icon: `src/images/bird-head.png`, // This path is relative to the root of the site.
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
