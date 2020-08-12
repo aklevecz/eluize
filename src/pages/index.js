@@ -229,9 +229,9 @@ const Eolian = () => {
           src={loadingGif}
         />
       )}
-      {showPopup &&
-        !context.chosenDevice &&
-        !context.spotifyAuth(<SignInPopup showPopup={setShowPopup} />)}
+      {showPopup && !context.chosenDevice && !context.spotifyAuth && (
+        <SignInPopup showPopup={setShowPopup} />
+      )}
       {showDevicePicker && (
         <DevicePicker
           devices={context.devices}
