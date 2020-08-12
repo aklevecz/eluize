@@ -22,23 +22,6 @@ module.exports = {
         typeName: ({ object }) => object.typeName || "JsonFiles",
       },
     },
-    {
-      resolve: "gatsby-plugin-netlify-cms",
-      options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
-      },
-    },
-    {
-      resolve: `gatsby-source-cloudinary`,
-      options: {
-        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-        apiKey: process.env.CLOUDINARY_API_KEY,
-        apiSecret: process.env.CLOUDINARY_API_SECRET,
-        resourceType: `image`,
-        // type: `type Value`,
-        prefix: `Artists/`,
-      },
-    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
