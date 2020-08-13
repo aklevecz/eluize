@@ -108,14 +108,13 @@ const Provider = ({ children }) => {
   }
 
   const getDevices = () => {
-    console.log("getting devices")
     getUserDevices()
       .then(d => {
-        console.log(d.devices)
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
             setIsPlaying(true)
+            setChosenDevice(device.id)
           }
         })
         setSpotifyAuth(true)
