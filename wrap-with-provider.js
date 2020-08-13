@@ -46,7 +46,7 @@ const Provider = ({ children }) => {
 
     const handlerEvent = event => {
       if (event.key !== "arcsasT") return
-      initPlayer()
+      // initPlayer()
       getDevices()
     }
     if (window) window.addEventListener("storage", handlerEvent, false)
@@ -109,7 +109,6 @@ const Provider = ({ children }) => {
   }
 
   const getDevices = () => {
-    alert("get devices")
     getUserDevices()
       .then(d => {
         setDevices(d.devices)
@@ -215,8 +214,8 @@ const Provider = ({ children }) => {
         name: RAPTOR_REPO_NAME,
         getOAuthToken: cb => {
           refreshToken().then(t => {
-            localStorage.setItem("arcsasT", t)
-            cb("t")
+            // localStorage.setItem("arcsasT", t)
+            cb(t)
           })
         },
         volume: 0.5,
