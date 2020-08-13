@@ -72,8 +72,7 @@ const Provider = ({ children }) => {
       getUserCurrentlyPlaying()
         .then(track => {
           showActiveTrack(track.item.id)
-          playerType === "spotify" && setIsPlaying(track.is_playing)
-          console.log(track)
+          setIsPlaying(track.is_playing)
           setTrack(track)
         })
         .catch(err => {

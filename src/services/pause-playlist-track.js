@@ -9,5 +9,5 @@ export default () => {
         Authorization: `Bearer ${localStorage.getItem("arcsasT")}`,
       },
     }
-  ).catch(error => console.log(error))
+  )
 }
