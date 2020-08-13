@@ -33,6 +33,7 @@ const SignInAndPickDevice = ({ playlistUri, showPopup, queuedTrack }) => {
   useEffect(() => {
     if (spotifyAuth) {
       initPlayer().then(() => {
+        alert("init and then get devices")
         getDevices()
       })
     }

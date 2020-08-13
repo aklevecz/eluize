@@ -190,7 +190,6 @@ const Provider = ({ children }) => {
     } else {
       await startPlayingPlaylist(undefined, undefined, undefined, trackUri)
     }
-    getDevices()
   }
 
   const resumePlayback = () => {
