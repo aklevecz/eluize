@@ -8,6 +8,7 @@ import { ebid, movePercentBar } from "./utils"
 import { albumUri } from "../../pages"
 import startPlayingPlaylist from "../../services/start-playing-playlist"
 import setVolume from "../../services/set-volume"
+import getUserCurrentlyPlaying from "../../services/get-user-currently-playing"
 
 function usePlayer(
   loaded,
@@ -70,19 +71,40 @@ function usePlayer(
   }, [context.track])
 
   // TRACK NAME
+  // useEffect(() => {
+  //   if (!loaded) return
+
+  //   const currentTrack = ebid("track-name").textContent
+  //   console.log(currentTrack, context.track.item.name)
+  //   if (currentTrack !== context.track.item.name) {
+  //     lerpOpacityOut(ebid("track-name")).then(() => {
+  //       ebid("track-name").textContent = context.track.item.name
+  //       lerpOpacityIn(ebid("track-name"))
+  //     })
+  //   }
+  //   ebid("track-name").textContent = currentTrack
+  // }, [context.track && context.track.item.name])
+
   useEffect(() => {
     if (!loaded) return
 
     const currentTrack = ebid("track-name").textContent
-    console.log(currentTrack, context.track.item.name)
-    if (currentTrack !== context.track.item.name) {
-      lerpOpacityOut(ebid("track-name")).then(() => {
-        ebid("track-name").textContent = context.track.item.name
-        lerpOpacityIn(ebid("track-name"))
-      })
-    }
-    ebid("track-name").textContent = currentTrack
-  }, [context.track && context.track.item.name])
+    console.log("checking song")
+    getUserCurrentlyPlaying().then(data => {
+      const trackName = data.item.name
+      const albumName = data.item.album.name
+      const albumImg = data.item.album.images[0].url
+      if (currentTrack !== trackName) {
+        lerpOpacityOut(ebid("track-name")).then(() => {
+          ebid("track-name").textContent = trackName
+          ebid("album-name").textContent = albumName
+          ebid("album-picture").setAttribute("xlink:href", albumImg)
+          lerpOpacityIn(ebid("track-name"))
+        })
+      }
+    })
+    //ebid("track-name").textContent = currentTrack
+  }, [context])
   // ***
 
   // AUTO PLAY?
@@ -108,12 +130,15 @@ function usePlayer(
   // PLAY AND PAUSE BUTTONS
   useEffect(() => {
     if (!loaded) return
+    console.log(context.isPlaying)
     if (context.isPlaying) {
       ebid("pause").style.display = "inherit"
       ebid("play").style.display = "none"
+      ebid("pause").onclick = context.pausePlayback
     } else {
       ebid("pause").style.display = "none"
       ebid("play").style.display = "inherit"
+      ebid("play").onclick = context.resumePlayback
     }
   }, [context])
 

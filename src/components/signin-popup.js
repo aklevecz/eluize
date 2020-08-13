@@ -31,9 +31,8 @@ const SignInPopup = ({ showPopup }) => {
       <Popup title={title} overlayOnClick={denySpotify}>
         <div
           style={{
-            margin: "auto",
+            margin: "-18px auto -2px",
             display: "block",
-            marginTop: "-17px",
             width: "60px",
           }}
         >

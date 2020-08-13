@@ -98,11 +98,17 @@ const Eolian = () => {
     ebid("star-container").style.left = volPos + "px"
     if (typeof window === "undefined") return
     movePercentBar(e.target.value)
-    if (Date.now() - volChangeRef.current > 100) {
-      setVolume(e.target.value)
-      setCurrentVolume(e.target.value)
-      volChangeRef.current = Date.now()
-    }
+    // if (Date.now() - volChangeRef.current > 100) {
+    //   setVolume(e.target.value)
+    //   setCurrentVolume(e.target.value)
+    //   volChangeRef.current = Date.now()
+    // }
+  }
+
+  const sendVolume = e => {
+    ebid("star").style.display = "none"
+    setVolume(e.target.value)
+    setCurrentVolume(e.target.value)
   }
 
   const toggleMuted = () => setMuted(!muted)
@@ -157,7 +163,6 @@ const Eolian = () => {
 
     const pause = ebid("pause")
     pause.style.display = "none"
-    pause.onclick = () => pausePlaylistTrack()
 
     const close = ebid("player-close")
     const closePlayer = () => {
@@ -179,6 +184,7 @@ const Eolian = () => {
       preTexts.forEach(text => {
         const uri = trackUris[text.id.toLowerCase().split("-")[0]]
         text.onclick = e => {
+          context.setPlayerType("spotify")
           setShowPopup(true)
           openPlayer(e)
           setQueuedTrack(uri)
@@ -263,8 +269,8 @@ const Eolian = () => {
         className="slider"
         id="volume-slider"
         onChange={volumeChange}
-        onMouseUp={() => (ebid("star").style.display = "none")}
-        onTouchEnd={() => (ebid("star").style.display = "none")}
+        onMouseUp={sendVolume}
+        onTouchEnd={sendVolume}
       />
     </>
   )

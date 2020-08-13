@@ -56,6 +56,7 @@ const Provider = ({ children }) => {
   useEffect(() => {
     if (!devices || playerType === "soundcloud") return
     let interval
+    return
     // const raptorRepoDevice = devices.find(
     //   device => device.name === RAPTOR_REPO_NAME
     // )
@@ -195,6 +196,7 @@ const Provider = ({ children }) => {
   }
 
   const resumePlayback = () => {
+    setIsPlaying(true)
     if (playerType === "spotify") {
       resumeSpotifyPlayback()
     } else if (playerType === "soundcloud") {
@@ -203,6 +205,7 @@ const Provider = ({ children }) => {
     }
   }
   const pausePlayback = () => {
+    setIsPlaying(false)
     if (playerType === "spotify") {
       pausePlaylistTrack()
     } else if (playerType === "soundcloud") {
@@ -218,18 +221,10 @@ const Provider = ({ children }) => {
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
-        // const token = localStorage.getItem("arcsasT")
-        // cb(token)
-        // console.log(token)
-        // cb(token)
-        // console.log("holler back yo")
-        // return
         refreshToken().then(t => {
           cb(t)
         })
-        // .catch(e => console.log(e))
       },
-      volume: 0,
     })
     player.connect()
     player.addListener("ready", ({ device_id }) => {

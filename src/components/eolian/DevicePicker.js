@@ -19,7 +19,6 @@ const DevicePicker = ({
   } = pickIcon.getBoundingClientRect()
   useEffect(() => {
     const { height, width } = deviceBoxRef.current.getBoundingClientRect()
-    console.log(pWidth)
     deviceBoxRef.current.style.marginLeft = -1 * (width / 2 - pWidth / 2) + "px"
 
     // redudancy ftw
