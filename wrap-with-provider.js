@@ -165,7 +165,7 @@ const Provider = ({ children }) => {
           })
           setIsPlaying(scPlayer.isActuallyPlaying())
         }
-      }, 1000)
+      }, 500)
     }
     return () => {
       clearInterval(interval)
