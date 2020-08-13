@@ -9,8 +9,6 @@ const DevicePicker = ({
   setShowDevicePicker,
   queuedTrack,
 }) => {
-  const [stupidHeight, setStupidHaeight] = useState()
-  console.log(stupidHeight)
   const deviceBoxRef = useRef()
   const pickIcon = ebid("pick-device")
   const {

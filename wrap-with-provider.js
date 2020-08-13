@@ -45,10 +45,7 @@ const Provider = ({ children }) => {
     }
 
     const handlerEvent = event => {
-      console.log("index storage event")
       if (event.key !== "arcsasT") return
-      console.log(event.key)
-      // getArtistPlaylist()
       initPlayer()
       getDevices()
     }
@@ -76,6 +73,7 @@ const Provider = ({ children }) => {
         .then(track => {
           showActiveTrack(track.item.id)
           playerType === "spotify" && setIsPlaying(track.is_playing)
+          console.log(track)
           setTrack(track)
         })
         .catch(err => {
@@ -167,7 +165,7 @@ const Provider = ({ children }) => {
           })
           setIsPlaying(scPlayer.isActuallyPlaying())
         }
-      }, 500)
+      }, 1000)
     }
     return () => {
       clearInterval(interval)
@@ -182,6 +180,10 @@ const Provider = ({ children }) => {
   const playSpotifyTrack = async (playlistUri, trackUri) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
     setPlayerType("spotify")
+    if (!spotifyAuth) {
+      await initPlayer()
+      await getDevices()
+    }
     if (playlistUri) {
       await startPlayingPlaylist(playlistUri, trackUri)
     } else {
@@ -212,37 +214,27 @@ const Provider = ({ children }) => {
       const player = new window.Spotify.Player({
         name: RAPTOR_REPO_NAME,
         getOAuthToken: cb => {
-          cb(localStorage.getItem("arcsasT"))
+          refreshToken().then(t => {
+            localStorage.setItem("arcsasT", t)
+            cb(t)
+          })
         },
+        volume: 0.5,
       })
       player.connect()
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id)
         localStorage.setItem("deviceId", device_id)
-        getDevices()
-        resolve()
+        // getDevices()
         setChosenDevice(device_id)
-
+        resolve()
         // Error handling
         player.addListener("initialization_error", ({ message }) => {
           console.error(message)
         })
-        player.addListener("authentication_error", async ({ message }) => {
+        player.addListener("authentication_error", ({ message }) => {
           console.log("auth error")
-          if (localStorage.getItem("refrashT")) {
-            const newToken = await refreshToken()
-            console.log(newToken)
-            localStorage.setItem("token", newToken.token)
-            player = new window.Spotify.Player({
-              name: RAPTOR_REPO_NAME,
-              getOAuthToken: cb => {
-                cb(newToken.token)
-              },
-            })
-            player.connect()
-          } else {
-            console.log("this user is not remembered")
-          }
+          reject()
 
           console.error(message)
         })
@@ -257,12 +249,10 @@ const Provider = ({ children }) => {
         player.addListener("player_state_changed", state => {
           if (!state) return
           const currentTrack = state.track_window.current_track
-          console.log(state)
           const paused = state.paused
           showActiveTrack(currentTrack.uri.split(":")[2])
           // setTrack(currentTrack)
           setIsPlaying(!paused)
-          console.log(currentTrack)
         })
 
         player.addListener("not_ready", ({ device_id }) => {

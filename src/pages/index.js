@@ -66,9 +66,7 @@ const Eolian = () => {
 
   useEffect(() => {
     // clear device init device?
-    context.initPlayer().then(() => {
-      context.getDevices()
-    })
+    context.initPlayer()
   }, [])
 
   useEffect(() => {
@@ -162,10 +160,14 @@ const Eolian = () => {
 
     const close = ebid("player-close")
     const closePlayer = () => {
+      ebid("player-open").style.display = "inherit"
+      ebid("player-open").style.opacity = 1
       setPlayerOpen(false)
     }
     close.onclick = closePlayer
     const openPlayer = e => {
+      ebid("player-open").style.opacity = 0
+      ebid("player-open").style.display = "none"
       setPlayerOpen(true)
     }
 
@@ -196,6 +198,9 @@ const Eolian = () => {
     addClass(listenButton, "button")
     listenButton.onclick = moveTracks
     ebid("static-volume-icon").onclick = toggleMuted
+
+    ebid("player-open").style.display = "none"
+    ebid("player-open").onclick = openPlayer
 
     // Shitty force of the loading screen
     setTimeout(() => {

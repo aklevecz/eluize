@@ -15,7 +15,6 @@ export default (contextUri, playlistTrackUri, givenDeviceId, singleTrack) => {
   const deviceId = givenDeviceId
     ? givenDeviceId
     : localStorage.getItem("deviceId")
-  console.log(body)
   return fetch(
     `https://api.spotify.com/v1/me/player/play${
       deviceId !== null ? `?device_id=${deviceId}` : ""

@@ -72,7 +72,9 @@ function usePlayer(
   // TRACK NAME
   useEffect(() => {
     if (!loaded) return
+
     const currentTrack = ebid("track-name").textContent
+    console.log(currentTrack, context.track.item.name)
     if (currentTrack !== context.track.item.name) {
       lerpOpacityOut(ebid("track-name")).then(() => {
         ebid("track-name").textContent = context.track.item.name

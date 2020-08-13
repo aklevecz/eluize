@@ -14,4 +14,5 @@ export default async () => {
       localStorage.setItem("arcsasT", data.access_token)
       return data.access_token
     })
+    .catch(e => console.log(e))
 }

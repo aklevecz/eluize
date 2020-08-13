@@ -24,6 +24,23 @@ $red-fill: #ff5050;
   cursor: pointer;
 }
 
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+#player-open {
+  animation: floating 2000ms infinite;
+  transition: opacity 2s;
+}
+
 button,
 #pause,
 #play,

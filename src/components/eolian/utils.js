@@ -29,7 +29,6 @@ export const collectCoords = g => {
 }
 
 export const movePercentBar = v => {
-  console.log("move the bar")
   const x1 = parseInt(ebid("volume-target").getAttribute("x1"))
   const x2 = parseInt(ebid("volume-target").getAttribute("x2"))
 
