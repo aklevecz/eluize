@@ -109,6 +109,7 @@ const Provider = ({ children }) => {
   }
 
   const getDevices = () => {
+    alert("get devices")
     getUserDevices()
       .then(d => {
         setDevices(d.devices)
@@ -216,7 +217,7 @@ const Provider = ({ children }) => {
         getOAuthToken: cb => {
           refreshToken().then(t => {
             localStorage.setItem("arcsasT", t)
-            cb(t)
+            cb("t")
           })
         },
         volume: 0.5,
