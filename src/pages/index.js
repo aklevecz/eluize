@@ -65,6 +65,7 @@ const Eolian = () => {
   )
 
   useEffect(() => {
+    // clear device init device?
     context.initPlayer().then(() => {
       context.getDevices()
     })
@@ -98,7 +99,7 @@ const Eolian = () => {
     ebid("star-container").style.left = volPos + "px"
     if (typeof window === "undefined") return
     movePercentBar(e.target.value)
-    if (Date.now() - volChangeRef.current > 1000) {
+    if (Date.now() - volChangeRef.current > 100) {
       setVolume(e.target.value)
       setCurrentVolume(e.target.value)
       volChangeRef.current = Date.now()
