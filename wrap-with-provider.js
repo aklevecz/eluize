@@ -213,7 +213,7 @@ const Provider = ({ children }) => {
 
   const initPlayer = () => {
     // return new Promise((resolve, reject) => {
-    if (typeof window === "undefined" && typeof window.Spotify === "undefined")
+    if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
