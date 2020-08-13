@@ -213,7 +213,8 @@ const Provider = ({ children }) => {
 
   const initPlayer = () => {
     // return new Promise((resolve, reject) => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined" && typeof window.Spotify === "undefined")
+      return
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
@@ -228,7 +229,7 @@ const Provider = ({ children }) => {
         })
         // .catch(e => console.log(e))
       },
-      // volume: 0.5,
+      volume: 0,
     })
     player.connect()
     player.addListener("ready", ({ device_id }) => {
