@@ -234,7 +234,7 @@ const Provider = ({ children }) => {
         })
         player.addListener("authentication_error", ({ message }) => {
           console.log("auth error")
-          reject()
+          resolve()
 
           console.error(message)
         })
