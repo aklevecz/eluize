@@ -94,8 +94,6 @@ function usePlayer(
       const trackName = data.item.name
       const albumName = data.item.album.name
       const albumImg = data.item.album.images[0].url
-      alert(currentTrack)
-      alert(trackName)
       if (currentTrack !== trackName) {
         lerpOpacityOut(ebid("track-name")).then(() => {
           ebid("track-name").textContent = trackName
