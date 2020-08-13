@@ -108,19 +108,20 @@ const Provider = ({ children }) => {
   }
 
   const getDevices = () => {
+    console.log("getting devices")
     getUserDevices()
       .then(d => {
+        console.log(d.devices)
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
-            console.log(device)
-            setChosenDevice(device.id)
             setIsPlaying(true)
           }
         })
         setSpotifyAuth(true)
       })
       .catch(error => {
+        console.log(error)
         setSpotifyAuth(false)
       })
   }
@@ -184,14 +185,14 @@ const Provider = ({ children }) => {
 
     // AUTH DEVICE AUDIT
     if (!spotifyAuth) {
-      await initPlayer()
-      await getDevices()
+      initPlayer()
     }
     if (playlistUri) {
       await startPlayingPlaylist(playlistUri, trackUri)
     } else {
       await startPlayingPlaylist(undefined, undefined, undefined, trackUri)
     }
+    getDevices()
   }
 
   const resumePlayback = () => {
@@ -212,56 +213,64 @@ const Provider = ({ children }) => {
   const resumeSpotifyPlayback = () => startPlayingPlaylist()
 
   const initPlayer = () => {
-    return new Promise((resolve, reject) => {
-      const player = new window.Spotify.Player({
-        name: RAPTOR_REPO_NAME,
-        getOAuthToken: cb => {
-          refreshToken().then(t => {
-            cb(t)
-          })
-        },
-        volume: 0.5,
-      })
-      player.connect()
-      player.addListener("ready", ({ device_id }) => {
-        console.log("Ready with Device ID", device_id)
-        localStorage.setItem("deviceId", device_id)
-        // getDevices()
-        setChosenDevice(device_id)
-        resolve()
-        // Error handling
-        player.addListener("initialization_error", ({ message }) => {
-          console.error(message)
+    // return new Promise((resolve, reject) => {
+    if (typeof window === "undefined") return
+    const player = new window.Spotify.Player({
+      name: RAPTOR_REPO_NAME,
+      getOAuthToken: cb => {
+        // const token = localStorage.getItem("arcsasT")
+        // cb(token)
+        // console.log(token)
+        // cb(token)
+        // console.log("holler back yo")
+        // return
+        refreshToken().then(t => {
+          cb(t)
         })
-        player.addListener("authentication_error", ({ message }) => {
-          console.log("auth error")
-          resolve()
-
-          console.error(message)
-        })
-        player.addListener("account_error", ({ message }) => {
-          console.error(message)
-        })
-        player.addListener("playback_error", ({ message }) => {
-          console.error(message)
-        })
-
-        // Playback status updates
-        player.addListener("player_state_changed", state => {
-          if (!state) return
-          const currentTrack = state.track_window.current_track
-          const paused = state.paused
-          showActiveTrack(currentTrack.uri.split(":")[2])
-          // setTrack(currentTrack)
-          setIsPlaying(!paused)
-        })
-
-        player.addListener("not_ready", ({ device_id }) => {
-          console.log("Device ID has gone offline", device_id)
-        })
-        setPlayer(player)
-      })
+        // .catch(e => console.log(e))
+      },
+      // volume: 0.5,
     })
+    player.connect()
+    player.addListener("ready", ({ device_id }) => {
+      console.log("Ready with Device ID", device_id)
+      localStorage.setItem("deviceId", device_id)
+      getDevices()
+      setChosenDevice(device_id)
+      // resolve()
+      // Error handling
+    })
+
+    player.addListener("initialization_error", ({ message }) => {
+      console.error(message)
+    })
+    player.addListener("authentication_error", ({ message }) => {
+      console.log("auth error")
+      // resolve()
+
+      console.error(message)
+    })
+    player.addListener("account_error", ({ message }) => {
+      console.error(message)
+    })
+    player.addListener("playback_error", ({ message }) => {
+      console.error(message)
+    })
+
+    // Playback status updates
+    player.addListener("player_state_changed", state => {
+      if (!state) return
+      const currentTrack = state.track_window.current_track
+      const paused = state.paused
+      showActiveTrack(currentTrack.uri.split(":")[2])
+      // setTrack(currentTrack)
+      setIsPlaying(!paused)
+    })
+
+    player.addListener("not_ready", ({ device_id }) => {
+      console.log("Device ID has gone offline", device_id)
+    })
+    setPlayer(player)
   }
   return (
     <playerContext.Provider

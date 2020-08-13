@@ -9,9 +9,8 @@ const SignInPopup = ({ showPopup }) => {
   )
   useEffect(() => {
     if (spotifyAuth) {
-      initPlayer().then(() => {
-        getDevices()
-      })
+      initPlayer()
+      getDevices()
       showPopup(false)
     }
   }, [])

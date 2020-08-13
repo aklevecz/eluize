@@ -67,6 +67,7 @@ const Eolian = () => {
   useEffect(() => {
     // clear device init device?
     context.initPlayer()
+    // context.getDevices()
   }, [])
 
   useEffect(() => {
