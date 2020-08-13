@@ -114,6 +114,8 @@ const Provider = ({ children }) => {
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
+            console.log(device)
+            setChosenDevice(device.id)
             setIsPlaying(true)
           }
         })
@@ -180,6 +182,8 @@ const Provider = ({ children }) => {
   const playSpotifyTrack = async (playlistUri, trackUri) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
     setPlayerType("spotify")
+
+    // AUTH DEVICE AUDIT
     if (!spotifyAuth) {
       await initPlayer()
       await getDevices()
@@ -214,7 +218,6 @@ const Provider = ({ children }) => {
         name: RAPTOR_REPO_NAME,
         getOAuthToken: cb => {
           refreshToken().then(t => {
-            // localStorage.setItem("arcsasT", t)
             cb(t)
           })
         },
