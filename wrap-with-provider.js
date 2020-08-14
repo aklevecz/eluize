@@ -236,8 +236,6 @@ const Provider = ({ children }) => {
       localStorage.setItem("deviceId", device_id)
       getDevices()
       setChosenDevice(device_id)
-      // resolve()
-      // Error handling
     })
 
     player.addListener("initialization_error", ({ message }) => {
@@ -245,8 +243,6 @@ const Provider = ({ children }) => {
     })
     player.addListener("authentication_error", ({ message }) => {
       console.log("auth error")
-      // resolve()
-
       console.error(message)
     })
     player.addListener("account_error", ({ message }) => {
@@ -262,7 +258,6 @@ const Provider = ({ children }) => {
       const currentTrack = state.track_window.current_track
       const paused = state.paused
       showActiveTrack(currentTrack.uri.split(":")[2])
-      // setTrack(currentTrack)
       setIsPlaying(!paused)
     })
 
@@ -301,7 +296,6 @@ const Provider = ({ children }) => {
         track,
       }}
     >
-      {/* <SEO title="freg" /> */}
       {children}
     </playerContext.Provider>
   )

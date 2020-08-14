@@ -209,6 +209,11 @@ const Eolian = () => {
     ebid("player-open").style.display = "none"
     ebid("player-open").onclick = openPlayer
 
+    ebid("eluize-photo").onclick = () => ebid("forget-it").play()
+    ebid("bird-photo").onclick = () => ebid("glisten").play()
+    ebid("eolian-title").onclick = () => ebid("ae").play()
+    ebid("eluize").onclick = () => ebid("wawa").play()
+
     // Shitty force of the loading screen
     setTimeout(() => {
       document.body.style.background = viewBox.style.fill
@@ -228,6 +233,11 @@ const Eolian = () => {
   return (
     <>
       <div>
+        <audio id="wawa" src={require("../sounds/wawa.mp3")} />
+        <audio id="ae" src={require("../sounds/ae.mp3")} />
+        <audio id="forget-it" src={require("../sounds/forget-it.mp3")} />
+        <audio id="glisten" src={require("../sounds/glisten.mp3")} />
+
         {/*just for token checking, don't really need it */}
         <SEO title="Eolian" image={require("../images/cover-photo.png")} />
         <Layout />
