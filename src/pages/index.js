@@ -144,6 +144,16 @@ const Eolian = () => {
     }
   }, [context.antiAuth])
 
+  useEffect(() => {
+    if (!loaded) return
+    if (typeof window === "undefined") return
+    const { y, width } = ebid("bird-photo").getBoundingClientRect()
+    ebid("video-wrapper").style.top = y + window.scrollY + "px"
+    ebid("video-wrapper").style.width = width + "px"
+    ebid("flappy-bird").style.width = width + 2 + "px"
+    ebid("flappy-bird").setAttribute("playsinline", true)
+  }, [loaded])
+
   // ** SETUP **
   const setup = () => {
     const viewBox = document.querySelector("#viewBox")
@@ -210,7 +220,19 @@ const Eolian = () => {
     ebid("player-open").onclick = openPlayer
 
     ebid("eluize-photo").onclick = () => ebid("forget-it").play()
-    ebid("bird-photo").onclick = () => ebid("glisten").play()
+
+    ebid("bird-photo").onclick = () => {
+      ebid("flappy-bird").style.display = "block"
+      setTimeout(() => (ebid("flappy-bird").style.opacity = 1), 0)
+
+      ebid("flappy-bird").play()
+      ebid("glisten").play()
+      ebid("glisten").addEventListener("ended", () => {
+        ebid("flappy-bird").style.opacity = 0
+
+        setTimeout(() => (ebid("flappy-bird").style.display = "none"), 5100)
+      })
+    }
     ebid("eolian-title").onclick = () => ebid("ae").play()
     ebid("eluize").onclick = () => ebid("wawa").play()
 
@@ -237,7 +259,13 @@ const Eolian = () => {
         <audio id="ae" src={require("../sounds/ae.mp3")} />
         <audio id="forget-it" src={require("../sounds/forget-it.mp3")} />
         <audio id="glisten" src={require("../sounds/glisten.mp3")} />
-
+        <div id="video-wrapper">
+          <video
+            id="flappy-bird"
+            src={require("../images/flappy-bird.mp4")}
+            playsInline
+          />
+        </div>
         {/*just for token checking, don't really need it */}
         <SEO title="Eolian" image={require("../images/cover-photo.png")} />
         <Layout />

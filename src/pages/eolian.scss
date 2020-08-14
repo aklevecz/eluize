@@ -99,3 +99,18 @@ button,
 #volume-target {
   opacity: 0;
 }
+
+#video-wrapper {
+  // width: 293px;
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  // top: 304px;
+  left: 2px;
+}
+video {
+  // width: 295px;
+  display: none;
+  opacity: 0;
+  transition: opacity 5s;
+}
