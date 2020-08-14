@@ -33,6 +33,5 @@ export default (contextUri, playlistTrackUri, givenDeviceId, singleTrack) => {
       return r
       return r.json()
     })
-    .then(data => data)
     .catch(handleErrors)
 }

@@ -33,6 +33,7 @@ function usePlayer(
     const tY = parseFloat(playerTarget.getAttribute("y"))
     const cY = parseFloat(player.querySelector("#bg").getAttribute("y"))
     if (playerOpen) {
+      document.querySelector(".slider").style.visibility = "visible"
       ebid("star-container").style.display = "inherit"
       lerpTranslateXY(player, 1, 1, 0, tY - cY, 0.05).then(() => {
         const { x: vX, y: vY, width } = ebid(
@@ -43,6 +44,7 @@ function usePlayer(
         ebid("volume-slider").style.width = width + "px"
       })
     } else {
+      document.querySelector(".slider").style.visibility = "hidden"
       ebid("star-container").style.display = "none"
       const playerY = player
         .getAttribute("transform")
@@ -84,14 +86,11 @@ function usePlayer(
   //   }
   //   ebid("track-name").textContent = currentTrack
   // }, [context.track && context.track.item.name])
-
-  useEffect(() => {
-    if (!loaded) return
-
+  const checkTrackName = () => {
     const currentTrack = ebid("track-name").textContent
-    console.log("checking song")
     getUserCurrentlyPlaying().then(data => {
       const trackName = data.item.name
+      // alert(`${trackName}, ${currentTrack}`)
       const albumName = data.item.album.name
       const albumImg = data.item.album.images[0].url
       if (currentTrack !== trackName) {
@@ -103,17 +102,20 @@ function usePlayer(
         })
       }
     })
+  }
+  useEffect(() => {
+    if (!loaded) return
+    checkTrackName()
     //ebid("track-name").textContent = currentTrack
-  }, [context.isPlaying])
+  }, [context.isPlaying, context.nextTrackUri])
   // ***
 
   // AUTO PLAY?
   useEffect(() => {
     if (playerOpen) {
-      context.playSpotifyTrack(albumUri, queuedTrack).then(() => {
-        setVolume(50)
-        movePercentBar(50)
-      })
+      context.playSpotifyTrack(albumUri, queuedTrack)
+      setVolume(50)
+      movePercentBar(50)
     }
     if (!playerOpen && context.chosenDevice) {
       context.playSpotifyTrack(albumUri, queuedTrack)
@@ -130,7 +132,6 @@ function usePlayer(
   // PLAY AND PAUSE BUTTONS
   useEffect(() => {
     if (!loaded) return
-    console.log(context.isPlaying)
     if (context.isPlaying) {
       ebid("pause").style.display = "inherit"
       ebid("play").style.display = "none"
@@ -158,17 +159,17 @@ function usePlayer(
   }, [loaded, showDevicePicker, context.spotifyAuth])
 
   // LISTENING TO DEVICE CHANGES
-  useEffect(() => {
-    if (!context.devices) return
-    const activeDevice = context.devices.find(d => d.is_active)
-    if (activeDevice) {
-      const x1 = parseInt(ebid("volume-target").getAttribute("x1"))
-      const x2 = parseInt(ebid("volume-target").getAttribute("x2"))
-      const volumePercent = activeDevice.volume_percent / 100
-      // const length = (x2 - x1) * volumePercent
-      // ebid("volume-percent").setAttribute("x2", x1 + length)
-    }
-  }, [context.devices])
+  // useEffect(() => {
+  //   if (!context.devices) return
+  //   const activeDevice = context.devices.find(d => d.is_active)
+  //   if (activeDevice) {
+  //     const x1 = parseInt(ebid("volume-target").getAttribute("x1"))
+  //     const x2 = parseInt(ebid("volume-target").getAttribute("x2"))
+  //     const volumePercent = activeDevice.volume_percent / 100
+  //     // const length = (x2 - x1) * volumePercent
+  //     // ebid("volume-percent").setAttribute("x2", x1 + length)
+  //   }
+  // }, [context.devices])
 
   return status
 }

@@ -38,6 +38,7 @@ const Provider = ({ children }) => {
   const [chosenDevice, setChosenDevice] = useState()
   const [devices, setDevices] = useState()
   const [track, setTrack] = useState()
+  const [nextTrackUri, setNextTrackUri] = useState()
   useEffect(() => {
     const currentToken = localStorage.getItem("arcsasT")
     if (currentToken) {
@@ -173,6 +174,7 @@ const Provider = ({ children }) => {
       clearInterval(interval)
     }
   }, [playerType])
+
   const pauseSoundcloud = () => {
     console.log("pausing soundcloud")
     scPlayer.pause()
@@ -189,8 +191,10 @@ const Provider = ({ children }) => {
     }
     if (playlistUri) {
       await startPlayingPlaylist(playlistUri, trackUri)
+      setTimeout(() => setNextTrackUri(trackUri), 500)
     } else {
       await startPlayingPlaylist(undefined, undefined, undefined, trackUri)
+      setTimeout(() => setNextTrackUri(trackUri), 500)
     }
     getDevices()
   }
@@ -278,6 +282,7 @@ const Provider = ({ children }) => {
         initSoundcloud,
         isPlaying,
         getAppToken,
+        nextTrackUri,
         pausePlayback,
         pausePlaylistTrack,
         pauseSoundcloud,
