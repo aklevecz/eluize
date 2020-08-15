@@ -116,6 +116,7 @@ function usePlayer(
       .split("_")
       .map(t => t.charAt(0).toUpperCase() + t.slice(1))
       .join(" ")
+    console.log(currentTrack, trackName)
     if (currentTrack !== trackName) {
       lerpOpacityOut(ebid("track-name")).then(() => {
         ebid("track-name").textContent = trackName
@@ -134,7 +135,7 @@ function usePlayer(
       checkTrackNameSoundcloud()
     }
     //ebid("track-name").textContent = currentTrack
-  }, [context.isPlaying, context.nextTrackUri])
+  }, [context.isPlaying, context.nextTrackUri, qScTrack])
   // ***
 
   // AUTO PLAY?

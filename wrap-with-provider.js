@@ -204,7 +204,6 @@ const Provider = ({ children }) => {
     if (!spotifyAuth) {
       initPlayer()
     }
-    console.log(devices, chosenDevice)
 
     if (devices && !chosenDevice) {
       console.log(devices, chosenDevice)
