@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useLayoutEffect, useState } from "react"
 import SVG from "react-inlinesvg"
 import { ebid } from "./utils"
 import { albumUri } from "../../pages"
+import { noDevicesWarning } from "./constants"
 const DevicePicker = ({
   devices,
   pickDevice,
@@ -45,6 +46,9 @@ const DevicePicker = ({
         left: x,
       }}
     >
+      {devices.length === 0 && (
+        <div style={{ margin: 10 }}>{noDevicesWarning}</div>
+      )}
       {devices.map(device => {
         return (
           <div

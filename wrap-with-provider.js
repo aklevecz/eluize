@@ -4,6 +4,7 @@ import startPlayingPlaylist from "./src/services/start-playing-playlist"
 import pausePlaylistTrack from "./src/services/pause-playlist-track"
 import getUserDevices from "./src/services/get-user-devices"
 import getUserCurrentlyPlaying from "./src/services/get-user-currently-playing"
+import { noDevicesWarning } from "./src/components/eolian/constants"
 
 const RAPTOR_REPO_NAME = "Eluize's Eolian Player"
 export const playerContext = React.createContext()
@@ -40,6 +41,7 @@ const Provider = ({ children }) => {
   const [devices, setDevices] = useState()
   const [track, setTrack] = useState()
   const [nextTrackUri, setNextTrackUri] = useState()
+  const [warningMessage, setWarningMessage] = useState("")
   useEffect(() => {
     const currentToken = localStorage.getItem("arcsasT")
     if (currentToken) {
@@ -110,9 +112,10 @@ const Provider = ({ children }) => {
       })
   }
 
-  const getDevices = () => {
-    getUserDevices()
+  const getDevices = async () => {
+    return getUserDevices()
       .then(d => {
+        console.log(d)
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
@@ -121,6 +124,7 @@ const Provider = ({ children }) => {
           }
         })
         setSpotifyAuth(true)
+        return d.devices
       })
       .catch(error => {
         console.log(error)
@@ -203,17 +207,21 @@ const Provider = ({ children }) => {
   const playSpotifyTrack = async (playlistUri, trackUri) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
     setPlayerType("spotify")
-
+    let availableDevices = devices
     // AUTH DEVICE AUDIT
     if (!spotifyAuth) {
-      console.log("auth not set")
+      console.log("no auth")
       initPlayer()
+    } else {
+      availableDevices = await getDevices()
     }
 
-    if (devices && !chosenDevice) {
-      console.log(devices, chosenDevice)
-      setChosenDevice(devices[0].id)
-      localStorage.setItem("deviceId", devices[0].id)
+    if (availableDevices.length === 0) {
+      return setWarningMessage(noDevicesWarning)
+    }
+    if (availableDevices && !chosenDevice) {
+      setChosenDevice(availableDevices[0].id)
+      localStorage.setItem("deviceId", availableDevices[0].id)
     }
     if (playlistUri) {
       await startPlayingPlaylist(playlistUri, trackUri)
@@ -222,7 +230,10 @@ const Provider = ({ children }) => {
       await startPlayingPlaylist(undefined, undefined, undefined, trackUri)
       setTimeout(() => setNextTrackUri(trackUri), 500)
     }
-    getDevices()
+    // Maybe this is redundant?
+    // getDevices().then(d => {
+    //   console.log(d)
+    // })
   }
 
   const resumePlayback = () => {
@@ -248,6 +259,7 @@ const Provider = ({ children }) => {
     // return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
+    return
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
@@ -324,6 +336,8 @@ const Provider = ({ children }) => {
         setTrack,
         spotifyAuth,
         track,
+        warningMessage,
+        setWarningMessage,
       }}
     >
       {children}

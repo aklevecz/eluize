@@ -27,6 +27,7 @@ import {
 import usePlayer from "../components/eolian/usePlayer"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import WarningPopup from "../components/warning-popup"
 
 export const albumUri = "spotify:album:00DHViaM6QJwQjipBFoqsB"
 export const trackUris = {
@@ -297,6 +298,7 @@ const Eolian = () => {
         />
       )}
       {showPopup && <SignInPopup showPopup={setShowPopup} />}
+      {context.warningMessage && <WarningPopup />}
       {showDevicePicker && (
         <DevicePicker
           devices={context.devices}
