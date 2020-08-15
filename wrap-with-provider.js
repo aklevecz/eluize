@@ -132,18 +132,33 @@ const Provider = ({ children }) => {
     // Do I need a conditional here?
     playSpotifyTrack(playlistUri, trackUri)
   }
-  const initSoundcloud = trackId => {
+  const initSoundcloud = () => {
     // pausePlaylistTrack()
     const client_id = "68ca93c0637a090be108eb8c8f3f8729"
     if (!window.SC) return
     const SC = window.SC
     SC.initialize({
       client_id,
+      // redirect_uri: "http://localhost:8000",
     })
-    SC.stream(`/tracks/${trackId}`).then(function (player) {
+
+    // SC.connect()
+    //   .then(function () {
+    //     return SC.get("/me")
+    //   })
+    //   .then(function (me) {
+    //     alert("Hello, " + me.username)
+    //   })
+  }
+
+  const playSoundcloudTrack = trackId => {
+    window.SC.stream(`/tracks/${trackId}`).then(function (player) {
       setScPlayer(player)
+      player.play()
+      setIsPlaying(true)
     })
   }
+
   const playSoundcloud = () => {
     if (isPlaying && playerType === "spotify") {
       pausePlaylistTrack()
@@ -155,7 +170,7 @@ const Provider = ({ children }) => {
 
   useEffect(() => {
     let interval
-    if (playerType === "soundcloud") {
+    if (playerType === "soundcloud" && scPlayer) {
       let loading = true
       interval = setInterval(() => {
         if (scPlayer.isActuallyPlaying() && loading) {
@@ -188,6 +203,13 @@ const Provider = ({ children }) => {
     // AUTH DEVICE AUDIT
     if (!spotifyAuth) {
       initPlayer()
+    }
+    console.log(devices, chosenDevice)
+
+    if (devices && !chosenDevice) {
+      console.log(devices, chosenDevice)
+      setChosenDevice(devices[0].id)
+      localStorage.setItem("deviceId", devices[0].id)
     }
     if (playlistUri) {
       await startPlayingPlaylist(playlistUri, trackUri)
@@ -222,6 +244,7 @@ const Provider = ({ children }) => {
     // return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
+    return
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
@@ -284,9 +307,11 @@ const Provider = ({ children }) => {
         pickDevice,
         player,
         playSoundcloud,
+        playSoundcloudTrack,
         playSpotifyTrack,
         playerType,
         resumePlayback,
+        scPlayer,
         setAntiAuth,
         setChosenDevice,
         setPlayerType,

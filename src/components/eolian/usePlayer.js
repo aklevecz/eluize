@@ -5,7 +5,7 @@ import {
   lerpOpacityIn,
 } from "../../templates/animations"
 import { ebid, movePercentBar } from "./utils"
-import { albumUri } from "../../pages"
+import { albumUri, scIds } from "../../pages"
 import startPlayingPlaylist from "../../services/start-playing-playlist"
 import setVolume from "../../services/set-volume"
 import getUserCurrentlyPlaying from "../../services/get-user-currently-playing"
@@ -16,7 +16,8 @@ function usePlayer(
   setShowDevicePicker,
   context,
   queuedTrack,
-  showDevicePicker
+  showDevicePicker,
+  qScTrack
 ) {
   const [status, setStatus] = useState()
   const startPlaying = () => {
@@ -86,7 +87,7 @@ function usePlayer(
   //   }
   //   ebid("track-name").textContent = currentTrack
   // }, [context.track && context.track.item.name])
-  const checkTrackName = () => {
+  const checkTrackNameSpotify = () => {
     const currentTrack = ebid("track-name").textContent
     getUserCurrentlyPlaying().then(data => {
       const trackName = data.item.name
@@ -103,24 +104,58 @@ function usePlayer(
       }
     })
   }
+
+  const checkTrackNameSoundcloud = () => {
+    const currentTrack = ebid("track-name").textContent
+    let trackName = Object.keys(scIds).find(name => {
+      if (scIds[name] === qScTrack) {
+        return name
+      }
+    })
+    trackName = trackName
+      .split("_")
+      .map(t => t.charAt(0).toUpperCase() + t.slice(1))
+      .join(" ")
+    if (currentTrack !== trackName) {
+      lerpOpacityOut(ebid("track-name")).then(() => {
+        ebid("track-name").textContent = trackName
+        // ebid("album-name").textContent = albumName
+        // ebid("album-picture").setAttribute("xlink:href", albumImg)
+        lerpOpacityIn(ebid("track-name"))
+      })
+    }
+  }
   useEffect(() => {
     if (!loaded) return
-    checkTrackName()
+    if (context.playerType === "spotify") {
+      checkTrackNameSpotify()
+    }
+    if (context.playerType === "soundcloud") {
+      checkTrackNameSoundcloud()
+    }
     //ebid("track-name").textContent = currentTrack
   }, [context.isPlaying, context.nextTrackUri])
   // ***
 
   // AUTO PLAY?
   useEffect(() => {
-    if (playerOpen) {
-      context.playSpotifyTrack(albumUri, queuedTrack)
-      setVolume(50)
-      movePercentBar(50)
-    }
-    if (!playerOpen && context.chosenDevice) {
-      context.playSpotifyTrack(albumUri, queuedTrack)
+    if (context.playerType === "spotify") {
+      if (playerOpen) {
+        context.playSpotifyTrack(albumUri, queuedTrack)
+        setVolume(50)
+        movePercentBar(50)
+      }
+      if (!playerOpen && context.chosenDevice) {
+        context.playSpotifyTrack(albumUri, queuedTrack)
+      }
     }
   }, [queuedTrack])
+
+  useEffect(() => {
+    if (context.playerType === "soundcloud") {
+      context.playSoundcloudTrack(qScTrack)
+    }
+  }, [qScTrack])
 
   // UPDATE PLAY CLICK
   useEffect(() => {
@@ -150,13 +185,23 @@ function usePlayer(
     }
     if (!loaded) return
     const devicePicker = ebid("pick-device")
-    if (!context.spotifyAuth) {
+    if (!context.spotifyAuth && context.playerType !== "spotify") {
       devicePicker.style.display = "none"
     } else {
       devicePicker.style.display = "inherit"
     }
     devicePicker.onclick = toggleDevicePicker
   }, [loaded, showDevicePicker, context.spotifyAuth])
+
+  useEffect(() => {
+    if (!loaded) return
+    console.log(context.playerType)
+    if (context.playerType === "soundcloud") {
+      ebid("pick-device").style.display = "none"
+    } else {
+      ebid("pick-device").style.display = "inherit"
+    }
+  }, [context.playerType])
 
   // LISTENING TO DEVICE CHANGES
   // useEffect(() => {

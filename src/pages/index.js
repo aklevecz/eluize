@@ -37,6 +37,14 @@ export const trackUris = {
   laze: "spotify:track:6afurbtcj10yYm4M1KMf0s",
   ae: "spotify:track:63m5LzFhvTRsze2CrWaAns",
 }
+export const scIds = {
+  eolian: "596387517",
+  losing_track: "602858691",
+  enklave: "597786219",
+  opulence: "589429818",
+  laze: "595773609",
+  ae: "601351863",
+}
 
 const Eolian = () => {
   const [src, setSrc] = useState(
@@ -47,6 +55,7 @@ const Eolian = () => {
   const [playerOpen, setPlayerOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [queuedTrack, setQueuedTrack] = useState("")
+  const [qScTrack, setQScTrack] = useState("")
   const [showDevicePicker, setShowDevicePicker] = useState(false)
   const [currentVolume, setCurrentVolume] = useState(50)
   const [muted, setMuted] = useState(false)
@@ -61,12 +70,15 @@ const Eolian = () => {
     setShowDevicePicker,
     context,
     queuedTrack,
-    showDevicePicker
+    showDevicePicker,
+    qScTrack
   )
 
   useEffect(() => {
     // clear device init device?
     context.initPlayer()
+    context.getDevices()
+    context.initSoundcloud()
     // context.getDevices()
   }, [])
 
@@ -193,13 +205,16 @@ const Eolian = () => {
       })
       preTexts.forEach(text => {
         const uri = trackUris[text.id.toLowerCase().split("-")[0]]
+        const scId = scIds[text.id.toLowerCase().split("-")[0]]
         text.onclick = e => {
-          context.setPlayerType("spotify")
+          context.setPlayerType("soundcloud")
           setShowPopup(true)
           openPlayer(e)
           setQueuedTrack(uri)
+          setQScTrack(scId)
         }
         text.setAttribute("track-data", uri)
+        text.setAttribute("sc-data", scId)
         addClass(text, "button")
         const baseId = getBaseId(text)
         lerpTranslateXY(
