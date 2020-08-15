@@ -306,6 +306,7 @@ const Eolian = () => {
           setShowDevicePicker={setShowDevicePicker}
           showDevicePicker={showDevicePicker}
           queuedTrack={queuedTrack}
+          chosenDevice={context.chosenDevice}
         />
       )}
       <SVG

@@ -119,16 +119,18 @@ const Provider = ({ children }) => {
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
-            setIsPlaying(true)
+            // setIsPlaying(true)
             setChosenDevice(device.id)
+            localStorage.setItem("deviceId", device.id)
           }
         })
         setSpotifyAuth(true)
-        return d.devices
+        return { devices: d.devices }
       })
       .catch(error => {
         console.log(error)
         setSpotifyAuth(false)
+        return { devices: [], error: "no_auth" }
       })
   }
   const pickDevice = (deviceId, playlistUri, trackUri) => {
@@ -213,12 +215,14 @@ const Provider = ({ children }) => {
       console.log("no auth")
       initPlayer()
     } else {
-      availableDevices = await getDevices()
+      const response = await getDevices()
+      availableDevices = response.devices
     }
 
     if (availableDevices.length === 0) {
       return setWarningMessage(noDevicesWarning)
     }
+    console.log(availableDevices, chosenDevice)
     if (availableDevices && !chosenDevice) {
       setChosenDevice(availableDevices[0].id)
       localStorage.setItem("deviceId", availableDevices[0].id)
@@ -259,7 +263,7 @@ const Provider = ({ children }) => {
     // return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
-    return
+
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {

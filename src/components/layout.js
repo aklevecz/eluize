@@ -31,6 +31,7 @@ const Layout = ({ children }) => {
         localStorage.setItem("refrashT", data.refresh_token)
         localStorage.setItem("arcsasT", data.access_token)
         // context.initPlayer()
+        // context.setNextTrackUri("freg")
         window.close()
       })
       .catch(error => {
