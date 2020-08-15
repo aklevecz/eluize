@@ -55,7 +55,7 @@ function usePlayer(
       lerpTranslateXY(player, 1, 1, parseFloat(playerY), 0, 0.05)
       setShowDevicePicker(false)
     }
-    if (!context.spotifyAuth) {
+    if (!context.spotifyAuth || context.playerType !== "spotify") {
       ebid("pick-device").style.display = "none"
     }
   }, [playerOpen])
@@ -150,13 +150,13 @@ function usePlayer(
         context.playSpotifyTrack(albumUri, queuedTrack)
       }
     }
-  }, [queuedTrack])
+  }, [queuedTrack, context.playerType])
 
   useEffect(() => {
     if (context.playerType === "soundcloud") {
       context.playSoundcloudTrack(qScTrack)
     }
-  }, [qScTrack])
+  }, [qScTrack, context.playerType])
 
   // UPDATE PLAY CLICK
   useEffect(() => {
@@ -186,7 +186,7 @@ function usePlayer(
     }
     if (!loaded) return
     const devicePicker = ebid("pick-device")
-    if (!context.spotifyAuth && context.playerType !== "spotify") {
+    if (!context.spotifyAuth || context.playerType !== "spotify") {
       devicePicker.style.display = "none"
     } else {
       devicePicker.style.display = "inherit"
@@ -196,7 +196,6 @@ function usePlayer(
 
   useEffect(() => {
     if (!loaded) return
-    console.log(context.playerType)
     if (context.playerType === "soundcloud") {
       ebid("pick-device").style.display = "none"
     } else {

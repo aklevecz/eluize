@@ -207,7 +207,7 @@ const Eolian = () => {
         const uri = trackUris[text.id.toLowerCase().split("-")[0]]
         const scId = scIds[text.id.toLowerCase().split("-")[0]]
         text.onclick = e => {
-          context.setPlayerType("soundcloud")
+          // context.setPlayerType("soundcloud")
           setShowPopup(true)
           openPlayer(e)
           setQueuedTrack(uri)
@@ -266,7 +266,6 @@ const Eolian = () => {
     ebid("spotify").onclick = () =>
       window.open("https://open.spotify.com/artist/4UynZk3RxczOK1AwaHR5ha")
   }
-
   return (
     <>
       <div>
@@ -297,9 +296,7 @@ const Eolian = () => {
           src={loadingGif}
         />
       )}
-      {showPopup && !context.chosenDevice && !context.spotifyAuth && (
-        <SignInPopup showPopup={setShowPopup} />
-      )}
+      {showPopup && <SignInPopup showPopup={setShowPopup} />}
       {showDevicePicker && (
         <DevicePicker
           devices={context.devices}

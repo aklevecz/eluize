@@ -36,6 +36,7 @@ const Provider = ({ children }) => {
   const [scPlayer, setScPlayer] = useState()
   const [isPlaying, setIsPlaying] = useState()
   const [chosenDevice, setChosenDevice] = useState()
+  const [chosenService, setChosenService] = useState()
   const [devices, setDevices] = useState()
   const [track, setTrack] = useState()
   const [nextTrackUri, setNextTrackUri] = useState()
@@ -142,6 +143,10 @@ const Provider = ({ children }) => {
       // redirect_uri: "http://localhost:8000",
     })
 
+    window.SC.stream(`/tracks/596387517`).then(function (player) {
+      setScPlayer(player)
+    })
+
     // SC.connect()
     //   .then(function () {
     //     return SC.get("/me")
@@ -191,7 +196,6 @@ const Provider = ({ children }) => {
   }, [playerType])
 
   const pauseSoundcloud = () => {
-    console.log("pausing soundcloud")
     scPlayer.pause()
     setIsPlaying(false)
   }
@@ -202,6 +206,7 @@ const Provider = ({ children }) => {
 
     // AUTH DEVICE AUDIT
     if (!spotifyAuth) {
+      console.log("auth not set")
       initPlayer()
     }
 
@@ -243,7 +248,6 @@ const Provider = ({ children }) => {
     // return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
-    return
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
@@ -293,6 +297,7 @@ const Provider = ({ children }) => {
       value={{
         antiAuth,
         chosenDevice,
+        chosenService,
         devices,
         getDevices,
         initPlayer,
@@ -313,6 +318,7 @@ const Provider = ({ children }) => {
         scPlayer,
         setAntiAuth,
         setChosenDevice,
+        setChosenService,
         setPlayerType,
         setSpotifyAuth,
         setTrack,
