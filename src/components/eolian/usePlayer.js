@@ -110,7 +110,6 @@ function usePlayer(
       .split("_")
       .map(t => t.charAt(0).toUpperCase() + t.slice(1))
       .join(" ")
-    console.log(currentTrack, trackName)
     if (currentTrack !== trackName) {
       lerpOpacityOut(ebid("track-name")).then(() => {
         ebid("track-name").textContent = trackName
@@ -136,13 +135,11 @@ function usePlayer(
   useEffect(() => {
     if (context.playerType === "spotify") {
       if (playerOpen && context.spotifyAuth) {
-        console.log(localStorage.getItem("arcsasT"))
         context.playSpotifyTrack(albumUri, queuedTrack)
         setVolume(50)
         movePercentBar(50)
       }
       if (!playerOpen && context.chosenDevice) {
-        console.log("NON PLAYER OPEN PLAYING")
         context.playSpotifyTrack(albumUri, queuedTrack)
       }
     }

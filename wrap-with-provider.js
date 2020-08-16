@@ -23,9 +23,7 @@ const showActiveTrack = uri => {
         `//*[@track-data="spotify:track:${uri}"]`
       )
       element.classList.add("playing")
-    } catch (err) {
-      console.log("cant find this boy")
-    }
+    } catch (err) {}
   }
 }
 const Provider = ({ children }) => {
@@ -50,6 +48,7 @@ const Provider = ({ children }) => {
 
     const handlerEvent = event => {
       if (event.key !== "arcsasT") return
+      if (!localStorage.getItem("arcsasT")) return
       initPlayer()
       //      getDevices()
       // maybe redudant
@@ -121,7 +120,6 @@ const Provider = ({ children }) => {
         d.devices.map(device => {
           if (device.is_active) {
             // setIsPlaying(true)
-            console.log("there was an active device", device.id)
             setChosenDevice(device.id)
             localStorage.setItem("deviceId", device.id)
           }
@@ -211,7 +209,6 @@ const Provider = ({ children }) => {
   const playSpotifyTrack = async (playlistUri, trackUri) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
     // maybe redudant
-    setPlayerType("spotify")
     let availableDevices = devices
     if (!spotifyAuth) {
       return console.log("no auth")
@@ -224,7 +221,6 @@ const Provider = ({ children }) => {
     if (availableDevices.length === 0) {
       // return setWarningMessage(noDevicesWarning)
     }
-    console.log(availableDevices, chosenDevice)
     if (availableDevices && !chosenDevice) {
       console.log("chosing at play")
       setChosenDevice(availableDevices[0].id)
@@ -292,6 +288,7 @@ const Provider = ({ children }) => {
     })
 
     player.addListener("initialization_error", ({ message }) => {
+      getDevices()
       initError = true
       console.error(message)
     })
