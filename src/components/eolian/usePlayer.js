@@ -133,7 +133,7 @@ function usePlayer(
 
   // AUTO PLAY?
   useEffect(() => {
-    console.log(context.player)
+    console.log(context.player, "asdasd")
     if (context.playerType === "spotify") {
       if (playerOpen) {
         context.playSpotifyTrack(albumUri, queuedTrack)

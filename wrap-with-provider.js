@@ -271,9 +271,11 @@ const Provider = ({ children }) => {
   const initPlayer = () => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
+    let initError
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
+        if (initError) return
         refreshToken().then(t => {
           cb(t)
         })
@@ -289,6 +291,7 @@ const Provider = ({ children }) => {
     })
 
     player.addListener("initialization_error", ({ message }) => {
+      initError = true
       console.error(message)
     })
     player.addListener("authentication_error", ({ message }) => {
