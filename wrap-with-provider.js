@@ -118,8 +118,9 @@ const Provider = ({ children }) => {
       .then(d => {
         setDevices(d.devices)
         d.devices.map(device => {
-          if (device.is_active) {
+          if (device.is_active && !isPlaying) {
             // setIsPlaying(true)
+            console.log("yackive")
             setChosenDevice(device.id)
             localStorage.setItem("deviceId", device.id)
           }
@@ -227,11 +228,7 @@ const Provider = ({ children }) => {
       localStorage.setItem("deviceId", availableDevices[0].id)
     }
     if (playlistUri) {
-      await startPlayingPlaylist(
-        playlistUri,
-        trackUri,
-        availableDevices[0].id
-      ).then(r => {
+      await startPlayingPlaylist(playlistUri, trackUri).then(r => {
         if (r.status === 204) setIsPlaying(true)
       })
       setTimeout(() => setNextTrackUri(trackUri), 500)
