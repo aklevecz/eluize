@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
+import { useSwipeable, Swipeable } from "react-swipeable"
+
 import SVG from "react-inlinesvg"
 import "./eolian.scss"
 import {
@@ -311,6 +313,7 @@ const Eolian = () => {
         <LogoutPopup
           context={context}
           setShowLogoutPopup={setShowLogoutPopup}
+          setPlayerOpen={setPlayerOpen}
         />
       )}
       {context.warningMessage && <WarningPopup />}
@@ -324,11 +327,21 @@ const Eolian = () => {
           chosenDevice={context.chosenDevice}
         />
       )}
-      <SVG
-        src={src}
-        onLoad={setup}
-        style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s" }}
-      />
+      <Swipeable
+        onSwiped={e => {
+          if (e.dir === "Down") {
+            ebid("player-open").style.display = "inherit"
+            ebid("player-open").style.opacity = 1
+            setPlayerOpen(false)
+          }
+        }}
+      >
+        <SVG
+          src={src}
+          onLoad={setup}
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s" }}
+        />
+      </Swipeable>
       <input
         type="range"
         min="0"

@@ -68,19 +68,21 @@ const SignInPopup = ({ showPopup }) => {
     <>
       <Popup title={title} overlayOnClick={denySpotify}>
         {!service && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              marginTop: 20,
-            }}
-          >
-            <button onClick={pickSpotify}>
-              <SpotifyIcon fill={"white"} />
-            </button>
-            <button onClick={pickSoundcloud}>
-              <SoundcloudIcon fill="white" />
-            </button>
+          <div style={{ maxWidth: "50%", margin: "auto" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                marginTop: 20,
+              }}
+            >
+              <button onClick={pickSpotify}>
+                <SpotifyIcon fill={"white"} />
+              </button>
+              <button onClick={pickSoundcloud}>
+                <SoundcloudIcon fill="white" />
+              </button>
+            </div>
           </div>
         )}
         {!spotifyAuth && service && (
@@ -95,15 +97,17 @@ const SignInPopup = ({ showPopup }) => {
               <SpotifyIcon />
             </div>
             <div style={{ color: "black" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  marginTop: 20,
-                }}
-              >
-                <button onClick={acceptSpotify}>YES</button>
-                <button onClick={denySpotify}>NO</button>
+              <div style={{ maxWidth: "50%", margin: "auto" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    marginTop: 20,
+                  }}
+                >
+                  <button onClick={acceptSpotify}>YES</button>
+                  <button onClick={denySpotify}>NO</button>
+                </div>
               </div>
             </div>
           </div>
