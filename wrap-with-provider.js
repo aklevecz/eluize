@@ -51,7 +51,8 @@ const Provider = ({ children }) => {
     const handlerEvent = event => {
       if (event.key !== "arcsasT") return
       initPlayer()
-      getDevices()
+      //      getDevices()
+      // maybe redudant
       setPlayerType("spotify")
     }
     if (window) window.addEventListener("storage", handlerEvent, false)
@@ -209,12 +210,11 @@ const Provider = ({ children }) => {
 
   const playSpotifyTrack = async (playlistUri, trackUri) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
+    // maybe redudant
     setPlayerType("spotify")
     let availableDevices = devices
-    // AUTH DEVICE AUDIT
-    console.log(spotifyAuth, player)
     if (!spotifyAuth) {
-      console.log("no auth")
+      return console.log("no auth")
       // await initPlayer()
     } else {
       const response = await getDevices()
@@ -276,9 +276,10 @@ const Provider = ({ children }) => {
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
         if (initError) return
-        refreshToken().then(t => {
-          cb(t)
-        })
+        // refreshToken().then(t => {
+        const t = localStorage.getItem("arcsasT")
+        cb(t)
+        // })
       },
     })
     player.connect()
@@ -346,6 +347,7 @@ const Provider = ({ children }) => {
         setAntiAuth,
         setChosenDevice,
         setChosenService,
+        setPlayer,
         setPlayerType,
         setSpotifyAuth,
         setTrack,

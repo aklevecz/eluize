@@ -17,7 +17,8 @@ function usePlayer(
   context,
   queuedTrack,
   showDevicePicker,
-  qScTrack
+  qScTrack,
+  setQueuedTrack
 ) {
   // ** OPENING PLAYER **
   useEffect(() => {
@@ -133,14 +134,15 @@ function usePlayer(
 
   // AUTO PLAY?
   useEffect(() => {
-    console.log(context.player, "asdasd")
     if (context.playerType === "spotify") {
-      if (playerOpen) {
+      if (playerOpen && context.spotifyAuth) {
+        console.log(localStorage.getItem("arcsasT"))
         context.playSpotifyTrack(albumUri, queuedTrack)
         setVolume(50)
         movePercentBar(50)
       }
       if (!playerOpen && context.chosenDevice) {
+        console.log("NON PLAYER OPEN PLAYING")
         context.playSpotifyTrack(albumUri, queuedTrack)
       }
     }
@@ -176,7 +178,13 @@ function usePlayer(
   // DEVICE PICKER
   useEffect(() => {
     const toggleDevicePicker = () => {
-      setShowDevicePicker(!showDevicePicker)
+      if (!showDevicePicker) {
+        context.getDevices().then(() => {
+          setShowDevicePicker(!showDevicePicker)
+        })
+      } else {
+        setShowDevicePicker(!showDevicePicker)
+      }
     }
     if (!loaded) return
     const devicePicker = ebid("pick-device")
@@ -196,6 +204,17 @@ function usePlayer(
       ebid("pick-device").style.display = "inherit"
     }
   }, [context.playerType])
+
+  useEffect(() => {
+    if (!loaded) return
+    if (!context.spotifyAuth) {
+      ebid("spotify-logout").style.display = "none"
+      ebid("player-open").style.display = "none"
+      setQueuedTrack("")
+    } else {
+      ebid("spotify-logout").style.display = "block"
+    }
+  }, [context.spotifyAuth, loaded])
 
   // LISTENING TO DEVICE CHANGES
   // useEffect(() => {

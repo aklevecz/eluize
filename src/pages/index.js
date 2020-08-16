@@ -28,6 +28,7 @@ import usePlayer from "../components/eolian/usePlayer"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import WarningPopup from "../components/warning-popup"
+import LogoutPopup from "../components/logout-popup"
 
 export const albumUri = "spotify:album:00DHViaM6QJwQjipBFoqsB"
 export const trackUris = {
@@ -55,6 +56,7 @@ const Eolian = () => {
   )
   const [playerOpen, setPlayerOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false)
   const [queuedTrack, setQueuedTrack] = useState("")
   const [qScTrack, setQScTrack] = useState("")
   const [showDevicePicker, setShowDevicePicker] = useState(false)
@@ -72,12 +74,13 @@ const Eolian = () => {
     context,
     queuedTrack,
     showDevicePicker,
-    qScTrack
+    qScTrack,
+    setQueuedTrack
   )
 
   useEffect(() => {
     // clear device init device?
-    context.initPlayer()
+    // context.initPlayer()
 
     if (localStorage.getItem("arcsasT") || localStorage.getItem("refrashT")) {
       context.getDevices()
@@ -256,6 +259,8 @@ const Eolian = () => {
     ebid("eolian-title").onclick = () => ebid("ae").play()
     ebid("eluize").onclick = () => ebid("wawa").play()
 
+    ebid("spotify-logout").onclick = setShowLogoutPopup
+
     // Shitty force of the loading screen
     setTimeout(() => {
       document.body.style.background = viewBox.style.fill
@@ -302,6 +307,12 @@ const Eolian = () => {
         />
       )}
       {showPopup && <SignInPopup showPopup={setShowPopup} />}
+      {showLogoutPopup && (
+        <LogoutPopup
+          context={context}
+          setShowLogoutPopup={setShowLogoutPopup}
+        />
+      )}
       {context.warningMessage && <WarningPopup />}
       {showDevicePicker && (
         <DevicePicker
