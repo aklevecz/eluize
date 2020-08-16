@@ -19,13 +19,6 @@ function usePlayer(
   showDevicePicker,
   qScTrack
 ) {
-  const [status, setStatus] = useState()
-  const startPlaying = () => {
-    startPlayingPlaylist().catch(e => {
-      startPlayingPlaylist(albumUri, queuedTrack)
-    })
-  }
-
   // ** OPENING PLAYER **
   useEffect(() => {
     if (!loaded || typeof window === "undefined") return
@@ -140,6 +133,7 @@ function usePlayer(
 
   // AUTO PLAY?
   useEffect(() => {
+    console.log(context.player)
     if (context.playerType === "spotify") {
       if (playerOpen) {
         context.playSpotifyTrack(albumUri, queuedTrack)
@@ -150,7 +144,7 @@ function usePlayer(
         context.playSpotifyTrack(albumUri, queuedTrack)
       }
     }
-  }, [queuedTrack, context.playerType])
+  }, [queuedTrack, context.playerType, context.spotifyAuth, context.player])
 
   useEffect(() => {
     if (context.playerType === "soundcloud") {
@@ -162,7 +156,7 @@ function usePlayer(
   useEffect(() => {
     if (!loaded) return
     const play = ebid("play")
-    play.onclick = () => startPlaying()
+    play.onclick = context.resumePlayback
   }, [queuedTrack])
 
   // PLAY AND PAUSE BUTTONS
@@ -216,7 +210,7 @@ function usePlayer(
   //   }
   // }, [context.devices])
 
-  return status
+  return true
 }
 
 export default usePlayer

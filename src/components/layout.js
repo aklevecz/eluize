@@ -27,10 +27,10 @@ const Layout = ({ children }) => {
         return r.json()
       })
       .then(data => {
-        console.log(data)
         localStorage.setItem("refrashT", data.refresh_token)
         localStorage.setItem("arcsasT", data.access_token)
         // context.initPlayer()
+        // context.setPlayerType("spotify")
         // context.setNextTrackUri("freg")
         window.close()
       })

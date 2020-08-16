@@ -51,7 +51,7 @@ const SignInPopup = ({ showPopup }) => {
 
   const pickSpotify = () => {
     setService("spotify")
-    setPlayerType("spotify")
+    // setPlayerType("spotify")
   }
   let title
   switch (service) {

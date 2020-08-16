@@ -50,8 +50,9 @@ const Provider = ({ children }) => {
 
     const handlerEvent = event => {
       if (event.key !== "arcsasT") return
-      // initPlayer()
+      initPlayer()
       getDevices()
+      setPlayerType("spotify")
     }
     if (window) window.addEventListener("storage", handlerEvent, false)
 
@@ -115,11 +116,11 @@ const Provider = ({ children }) => {
   const getDevices = async () => {
     return getUserDevices()
       .then(d => {
-        console.log(d)
         setDevices(d.devices)
         d.devices.map(device => {
           if (device.is_active) {
             // setIsPlaying(true)
+            console.log("there was an active device", device.id)
             setChosenDevice(device.id)
             localStorage.setItem("deviceId", device.id)
           }
@@ -211,24 +212,32 @@ const Provider = ({ children }) => {
     setPlayerType("spotify")
     let availableDevices = devices
     // AUTH DEVICE AUDIT
+    console.log(spotifyAuth, player)
     if (!spotifyAuth) {
       console.log("no auth")
-      initPlayer()
+      // await initPlayer()
     } else {
       const response = await getDevices()
       availableDevices = response.devices
     }
 
     if (availableDevices.length === 0) {
-      return setWarningMessage(noDevicesWarning)
+      // return setWarningMessage(noDevicesWarning)
     }
     console.log(availableDevices, chosenDevice)
     if (availableDevices && !chosenDevice) {
+      console.log("chosing at play")
       setChosenDevice(availableDevices[0].id)
       localStorage.setItem("deviceId", availableDevices[0].id)
     }
     if (playlistUri) {
-      await startPlayingPlaylist(playlistUri, trackUri)
+      await startPlayingPlaylist(
+        playlistUri,
+        trackUri,
+        availableDevices[0].id
+      ).then(r => {
+        if (r.status === 204) setIsPlaying(true)
+      })
       setTimeout(() => setNextTrackUri(trackUri), 500)
     } else {
       await startPlayingPlaylist(undefined, undefined, undefined, trackUri)
@@ -260,10 +269,8 @@ const Provider = ({ children }) => {
   const resumeSpotifyPlayback = () => startPlayingPlaylist()
 
   const initPlayer = () => {
-    // return new Promise((resolve, reject) => {
     if (typeof window === "undefined" || typeof window.Spotify === "undefined")
       return
-
     const player = new window.Spotify.Player({
       name: RAPTOR_REPO_NAME,
       getOAuthToken: cb => {
@@ -278,6 +285,7 @@ const Provider = ({ children }) => {
       localStorage.setItem("deviceId", device_id)
       getDevices()
       setChosenDevice(device_id)
+      setPlayer({ ...player, fuck: true })
     })
 
     player.addListener("initialization_error", ({ message }) => {

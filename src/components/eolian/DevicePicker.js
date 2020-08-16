@@ -66,12 +66,11 @@ const DevicePicker = ({
               setShowDevicePicker(false)
             }}
           >
-            {device.is_active ||
-              (device.id === chosenDevice && (
-                <div style={{ height: 10, fill: "#3fff48" }}>
-                  <SVG src={require("../../images/music-note.svg")} />
-                </div>
-              ))}
+            {device.id === chosenDevice && (
+              <div style={{ height: 10, fill: "#3fff48" }}>
+                <SVG src={require("../../images/music-note.svg")} />
+              </div>
+            )}
             <div style={{ gridColumn: 2 }}>{device.name}</div>
           </div>
         )

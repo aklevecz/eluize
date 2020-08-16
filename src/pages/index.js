@@ -78,7 +78,11 @@ const Eolian = () => {
   useEffect(() => {
     // clear device init device?
     context.initPlayer()
-    context.getDevices()
+
+    if (localStorage.getItem("arcsasT") || localStorage.getItem("refrashT")) {
+      context.getDevices()
+    }
+
     context.initSoundcloud()
     // context.getDevices()
   }, [])
