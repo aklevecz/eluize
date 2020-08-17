@@ -120,7 +120,6 @@ const Provider = ({ children }) => {
         d.devices.map(device => {
           if (device.is_active && !isPlaying) {
             // setIsPlaying(true)
-            console.log("yackive")
             setChosenDevice(device.id)
             localStorage.setItem("deviceId", device.id)
           }

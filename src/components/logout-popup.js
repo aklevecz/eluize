@@ -22,7 +22,7 @@ const LogoutPopup = ({ context, setPlayerOpen, setShowLogoutPopup }) => {
         title={"Disconnect your Spotify?"}
         overlayOnClick={() => setShowLogoutPopup(false)}
       >
-        <div style={{ maxWidth: "50%", margin: "auto" }}>
+        <div className="button-container">
           <div
             style={{
               display: "flex",

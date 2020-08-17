@@ -76,10 +76,10 @@ const SignInPopup = ({ showPopup }) => {
                 marginTop: 20,
               }}
             >
-              <button onClick={pickSpotify}>
+              <button className="icon" onClick={pickSpotify}>
                 <SpotifyIcon fill={"white"} />
               </button>
-              <button onClick={pickSoundcloud}>
+              <button className="icon" onClick={pickSoundcloud}>
                 <SoundcloudIcon fill="white" />
               </button>
             </div>
@@ -97,7 +97,7 @@ const SignInPopup = ({ showPopup }) => {
               <SpotifyIcon />
             </div>
             <div style={{ color: "black" }}>
-              <div style={{ maxWidth: "50%", margin: "auto" }}>
+              <div className="button-container">
                 <div
                   style={{
                     display: "flex",

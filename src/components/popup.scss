@@ -32,7 +32,14 @@
     color: lime;
   }
 }
+.button-container {
+  margin: auto;
+  max-width: 50%;
 
+  @media screen and (max-width: 768px) {
+    max-width: 64%;
+  }
+}
 button {
   background: black;
   border: 3px solid black;
@@ -44,6 +51,14 @@ button {
   color: white;
   max-width: 80px;
   max-height: 80px;
+
+  @media screen and (max-width: 768px) {
+    width: 75px;
+    &.icon {
+      width: 50px;
+      max-height: 50px;
+    }
+  }
 }
 
 .popup-overlay {
