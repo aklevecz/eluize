@@ -59,7 +59,7 @@ const SignInPopup = ({ showPopup }) => {
       title = "Ok! You picked Soundcloud"
       break
     case "spotify":
-      title = "Connect to use the Player"
+      title = "Signin to use the Player"
       break
     default:
       title = "Soundcloud or Spotify?"
@@ -105,8 +105,8 @@ const SignInPopup = ({ showPopup }) => {
                     marginTop: 20,
                   }}
                 >
-                  <button onClick={acceptSpotify}>YES</button>
-                  <button onClick={denySpotify}>NO</button>
+                  <button onClick={acceptSpotify}>OK</button>
+                  <button onClick={denySpotify}>Naw</button>
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import pausePlaylistTrack from "./src/services/pause-playlist-track"
 import getUserDevices from "./src/services/get-user-devices"
 import getUserCurrentlyPlaying from "./src/services/get-user-currently-playing"
 import { noDevicesWarning } from "./src/components/eolian/constants"
+import getUser from "./src/services/get-user"
 
 const RAPTOR_REPO_NAME = "Eluize's Eolian Player"
 export const playerContext = React.createContext()
@@ -40,6 +41,7 @@ const Provider = ({ children }) => {
   const [track, setTrack] = useState()
   const [nextTrackUri, setNextTrackUri] = useState()
   const [warningMessage, setWarningMessage] = useState("")
+  const [userSubscription, setUserSubscription] = useState("")
   useEffect(() => {
     const currentToken = localStorage.getItem("arcsasT")
     if (currentToken) {
@@ -49,6 +51,9 @@ const Provider = ({ children }) => {
     const handlerEvent = event => {
       if (event.key !== "arcsasT") return
       if (!localStorage.getItem("arcsasT")) return
+      getUser().then(data => {
+        setUserSubscription(data.product)
+      })
       initPlayer()
       //      getDevices()
       // maybe redudant
@@ -58,6 +63,13 @@ const Provider = ({ children }) => {
 
     return () => window.removeEventListener("storage", handlerEvent, false)
   }, [])
+
+  useEffect(() => {
+    if (!spotifyAuth) return
+    getUser().then(data => {
+      setUserSubscription(data.product)
+    })
+  }, [spotifyAuth])
   useEffect(() => {
     if (!devices || playerType === "soundcloud") return
     let interval
@@ -210,6 +222,13 @@ const Provider = ({ children }) => {
     if (isPlaying && scPlayer) pauseSoundcloud()
     // maybe redudant
     let availableDevices = devices
+
+    if (userSubscription === "open") {
+      setAntiAuth(true)
+      return setWarningMessage(
+        "You need a premium Spotify subscription in order to use the web player."
+      )
+    }
     if (!spotifyAuth) {
       return console.log("no auth")
       // await initPlayer()
