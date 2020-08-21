@@ -288,6 +288,9 @@ const Eolian = () => {
       setLoaded(true)
     }, 0)
 
+    ebid("progress").style.display = "none"
+    ebid("duration").style.display = "none"
+
     if (typeof window !== "undefined")
       ebid("bandcamp").onclick = () =>
         window.open("https://shallnotfade.bandcamp.com/album/eolian-ep")
