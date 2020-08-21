@@ -293,7 +293,7 @@ const Eolian = () => {
 
     if (typeof window !== "undefined")
       ebid("bandcamp").onclick = () =>
-        window.open("https://shallnotfade.bandcamp.com/album/eolian-ep")
+        window.open("https://eluize.bandcamp.com/album/eolian-ep")
     ebid("soundcloud").onclick = () =>
       window.open("https://soundcloud.com/eluize")
     ebid("spotify").onclick = () =>
