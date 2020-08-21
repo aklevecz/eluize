@@ -297,7 +297,9 @@ const Eolian = () => {
     ebid("soundcloud").onclick = () =>
       window.open("https://soundcloud.com/eluize")
     ebid("spotify").onclick = () =>
-      window.open("https://open.spotify.com/artist/4UynZk3RxczOK1AwaHR5ha")
+      window.open(
+        "https://open.spotify.com/album/0xhKFdZX8hrARc6GPMoA3j?si=9AabY5ntSQmsA0Iz1uth9Q"
+      )
   }
   return (
     <>
