@@ -32,15 +32,33 @@ import SEO from "../components/seo"
 import WarningPopup from "../components/warning-popup"
 import LogoutPopup from "../components/logout-popup"
 
-export const albumUri = "spotify:album:00DHViaM6QJwQjipBFoqsB"
+// export const albumUri = "spotify:album:00DHViaM6QJwQjipBFoqsB"
+// export const trackUris = {
+//   eolian: "spotify:track:495VVx56Vd5HkCw914GfCZ",
+//   losing_track: "spotify:track:2KjnarehBXAyjUc6FfcZ70",
+//   enklave: "spotify:track:5OfV5HdNjjUa8bvk1vBW6H",
+//   opulence: "spotify:track:4R6ofbEv0bcZzV4SgvzXVn",
+//   laze: "spotify:track:6afurbtcj10yYm4M1KMf0s",
+//   ae: "spotify:track:63m5LzFhvTRsze2CrWaAns",
+// }
+export const albumUri = "spotify:album:0xhKFdZX8hrARc6GPMoA3j"
+// export const trackUris = {
+//   eolian: "spotify:track:0nnG7hrUesatDMJ6EvfAkxZ",
+//   losing_track: "spotify:track:48yicnSNurpOq3I4ZGrap30",
+//   enklave: "spotify:track:2r2azT1d1sThMkgaaJj4rBH",
+//   opulence: "spotify:track:1TesaQJp7T9HU1XEUA69kxn",
+//   laze: "spotify:track:70qGzySsOx1asTcmuYm6Vzs",
+//   ae: "spotify:track:6APlViwOcbmSj5nf34QX9vs",
+// }
 export const trackUris = {
-  eolian: "spotify:track:495VVx56Vd5HkCw914GfCZ",
-  losing_track: "spotify:track:2KjnarehBXAyjUc6FfcZ70",
-  enklave: "spotify:track:5OfV5HdNjjUa8bvk1vBW6H",
-  opulence: "spotify:track:4R6ofbEv0bcZzV4SgvzXVn",
-  laze: "spotify:track:6afurbtcj10yYm4M1KMf0s",
-  ae: "spotify:track:63m5LzFhvTRsze2CrWaAns",
+  eolian: 0,
+  losing_track: 1,
+  enklave: 2,
+  opulence: 3,
+  laze: 4,
+  ae: 5,
 }
+
 export const scIds = {
   eolian: "596387517",
   losing_track: "602858691",

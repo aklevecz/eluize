@@ -13,7 +13,7 @@ const SignInPopup = ({ showPopup }) => {
     setPlayerType,
     spotifyAuth,
   } = useContext(playerContext)
-  const [service, setService] = useState("")
+  const [service, setService] = useState("spotify")
   useEffect(() => {
     if (spotifyAuth && !playerType) {
       initPlayer()
